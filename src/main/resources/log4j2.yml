@@ -1,0 +1,53 @@
+Configutation:
+  Properties:
+    Property:
+      - name: path
+        value: logs
+      - name: filename
+        value: upwork-task
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"
+
+    RollingFile:
+      - name: RollingFile
+        fileName: "${path}/${filename}.log"
+        filePattern: "${path}/$${date:yyyy-MM}/${filename}-%d{-dd-MM-yyyy}-%i.log.gz"
+        PatternLayout:
+          pattern: "%d %p %C{1.} [%t] %m%n"
+        Policies:
+          TimeBasedTriggeringPolicy:
+            interval: 1
+            modulate: true
+          SizeBasedTriggeringPolicy:
+              size: "10 MB"
+
+      - name: ChatChangelog
+        fileName: "${path}/chat/${filename}.log"
+        filePattern: "${path}/db/$${date:yyyy-MM}/${filename}-%d{-dd-MM-yyyy}-%i.log.gz"
+        PatternLayout:
+          pattern: "%d %p %C{1.} [%t] %m%n"
+        Policies:
+          TimeBasedTriggeringPolicy:
+            interval: 1
+            modulate: true
+          SizeBasedTriggeringPolicy:
+            size: "5 MB"
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: RollingFile
+
+    Logger:
+      - name: DBChangelog
+        level: debug
+        AppenderRef:
+          ref: DBChangelog
+          level: debug
