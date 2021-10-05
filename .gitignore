@@ -1,0 +1,49 @@
+# Eclipse
+.project
+.classpath
+.settings/
+*.launch
+bin/
+
+# IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
+*.ipr
+*/target
+/target
+.run
+
+# NetBeans
+nb-configuration.xml
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Visual Studio Code
+.vscode
+.factorypath
+
+# OSX
+.DS_Store
+
+# Vim
+*.swp
+*.swo
+
+# patch
+*.orig
+*.rej
+
+### STS ###
+.apt_generated
+.springBeans
+.sts4-cache
+/.idea/
+/.idea/
