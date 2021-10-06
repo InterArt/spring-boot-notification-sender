@@ -1,6 +1,5 @@
 package com.notificationsender.model;
 
-import java.util.Map;
 import lombok.Builder;
 import lombok.Value;
 
@@ -11,10 +10,8 @@ public class AssignmentTask {
   private Employee employee;
   private Customer customer;
   private EventTypeEnum eventType;
-  private int delayInSeconds;
+  private long delayInSeconds;
   private Template template;
-
-  public Map<String, Object> toMap() {
-    return null;
-  }
+  private String stepId;
+  private String description;
 }

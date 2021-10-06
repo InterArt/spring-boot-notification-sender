@@ -8,11 +8,16 @@ import com.notificationsender.event.handler.SimpleEmailEvent;
 import com.notificationsender.event.handler.SimpleSMSEvent;
 import com.notificationsender.model.NotificationTypeEnum;
 import com.notificationsender.event.provider.NotificationProviderFactory;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Log4j2
 @Component
 public class SendMessageScheduler {
 
@@ -21,6 +26,8 @@ public class SendMessageScheduler {
 
   @Autowired
   private NotificationProviderFactory notificationProviderFactory;
+
+  private final Map<String, Timer> timerMap = new HashMap<>();
 
   public void schedule(ProcessContext processContext) {
     var delay = processContext.getTask().getDelayInSeconds();
@@ -39,6 +46,18 @@ public class SendMessageScheduler {
             .sendTo(notificationReceiver, eventData.getMessage());
       }
     }, delay);
+    timerMap.put(processContext.getJobId(), timer);
+  }
+
+  private void cancelTask(String taskId) {
+    var timer = timerMap.get(taskId);
+    if (timer == null) {
+      log.error("Timer not found for id {} ", taskId);
+      return;
+    }
+
+    timer.cancel();
+    timer.purge();
   }
 
 
